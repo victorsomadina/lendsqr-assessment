@@ -2,7 +2,7 @@
   "main": "src/server/server.ts",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/server/server.js",
+    "start": "node dist/src/server/server.js",
     "dev": "cross-env NODE_ENV=development ts-node-dev --respawn src/server/server.ts",
     "knex": "knex --knexfile src/database/knexfile.ts",
     "migrate": "npm run knex migrate:latest",
