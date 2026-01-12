@@ -1,0 +1,8 @@
+{
+  "builds": [
+    {
+      "src": "backend/package.json",
+      "use": "@railpack/node"
+    }
+  ]
+}
