@@ -1,7 +1,12 @@
+export interface FundAccountInput {
+  amount: number;
+}
 
-export interface CreateWalletDto {
-  userId: string;
-  accountNumber: string;
-  balance?: number;
-  currency?: string;
+export interface TransferFundsInput {
+  recipientAccountNumber: string;
+  amount: number;
+}
+
+export interface WithdrawFundsInput {
+  amount: number;
 }

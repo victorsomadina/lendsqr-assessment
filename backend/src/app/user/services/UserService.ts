@@ -4,6 +4,7 @@ import { Inject, Service } from "typedi";
 import { ulid } from "ulid";
 import { User } from "../entities/User";
 import { SignupInput } from "../inputs/SignupInputs";
+import { LoginInput } from "../inputs/LoginInputs";
 import { AdjutorService } from "./AdjutorService";
 
 @Service()
@@ -13,7 +14,7 @@ export class UserService {
         private adjutorService: AdjutorService
     ) { }
 
-    async createAccount(input: SignupInput): Promise<User> {
+    async createAccount(input: SignupInput): Promise<User & { accountNumber: string }> {
         const existing = await this.db<User>("users").where({ email: input.email }).first();
         if (existing) {
             throw new Error("A user with this email already exists.");
@@ -39,8 +40,8 @@ export class UserService {
                 email: input.email,
                 password: hashedPassword,
                 phone: input.phone,
-                createdAt: new Date(),
-                updatedAt: new Date(),
+                created_at: new Date(),
+                updated_at: new Date(),
             });
 
             await trx("wallets").insert({
@@ -49,14 +50,33 @@ export class UserService {
                 accountNumber: accountNumber,
                 balance: 0,
                 currency: "NGN",
-                createdAt: new Date(),
-                updatedAt: new Date(),
+                created_at: new Date(),
+                updated_at: new Date(),
             });
 
             return trx<User>("users").where({ id: userId }).select();
         });
 
-        return newUser;
+        return { ...newUser, accountNumber };
+    }
+
+    async login(input: LoginInput): Promise<{ user: User; token: string }> {
+        const user = await this.db<User>("users").where({ email: input.email }).first();
+        if (!user) {
+            throw new Error("Invalid email or password.");
+        }
+
+        const isMatch = await bcrypt.compare(input.password, user.password);
+        if (!isMatch) {
+            throw new Error("Invalid email or password.");
+        }
+
+        const token = require("jwt-simple").encode(
+            { userId: user.id, email: user.email, iat: Date.now() },
+            process.env.JWT_SECRET || "default_secret"
+        );
+
+        return { user, token };
     }
 
     async findByEmail(email: string): Promise<User | undefined> {

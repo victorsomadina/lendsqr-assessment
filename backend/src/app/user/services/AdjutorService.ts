@@ -11,11 +11,7 @@ export interface KarmaCheckResponse {
     message: string;
     data: {
         karma_identity: string;
-        amount_due: number;
-        reason: string;
-        reporter: {
-            label: string;
-        };
+        [key: string]: any;
     } | null;
 }
 
@@ -43,7 +39,11 @@ export class AdjutorService {
                 }
             );
 
-            return !!response.data.data;
+            if (response.data && response.data.data) {
+                return response.data.data.karma_identity === email;
+            }
+
+            return false;
         } catch (error: any) {
             if (error.response && error.response.status === 404) {
                 return false;

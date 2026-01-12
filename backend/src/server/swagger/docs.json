@@ -1,13 +1,14 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Lendsqr Wallet Service API",
+        "title": "Lendsqr Assessment API",
         "version": "1.0.0",
-        "description": "API documentation for the Lendsqr wallet service assessment"
+        "description": "API documentation for the Lendsqr Assessment"
     },
     "servers": [
         {
-            "description": "Development server"
+            "url": "/api",
+            "description": "Local API server"
         }
     ],
     "paths": {
@@ -57,6 +58,182 @@
                     },
                     "400": {
                         "description": "Bad request (e.g., email exists or blacklisted)"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "summary": "User Login",
+                "description": "Authenticates a user and returns a token.",
+                "tags": [
+                    "User"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "email",
+                                    "password"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful"
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                }
+            }
+        },
+        "/fund": {
+            "post": {
+                "summary": "Fund Account",
+                "description": "Adds funds to the authenticated user's wallet.",
+                "tags": [
+                    "Wallet"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "amount": {
+                                        "type": "number",
+                                        "description": "Amount to fund"
+                                    }
+                                },
+                                "required": [
+                                    "amount"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Funding successful"
+                    },
+                    "404": {
+                        "description": "Wallet not found"
+                    }
+                }
+            }
+        },
+        "/transfer": {
+            "post": {
+                "summary": "Transfer Funds",
+                "description": "Transfers funds from the authenticated user to another account.",
+                "tags": [
+                    "Wallet"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "recipientAccountNumber": {
+                                        "type": "string",
+                                        "description": "Account number of the recipient"
+                                    },
+                                    "amount": {
+                                        "type": "number",
+                                        "description": "Amount to transfer"
+                                    }
+                                },
+                                "required": [
+                                    "recipientAccountNumber",
+                                    "amount"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Transfer successful"
+                    },
+                    "400": {
+                        "description": "Insufficient funds or invalid transfer"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Recipient not found"
+                    }
+                }
+            }
+        },
+        "/withdraw": {
+            "post": {
+                "summary": "Withdraw Funds",
+                "description": "Withdraws funds from the authenticated user's wallet.",
+                "tags": [
+                    "Wallet"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "amount": {
+                                        "type": "number",
+                                        "description": "Amount to withdraw"
+                                    }
+                                },
+                                "required": [
+                                    "amount"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Withdrawal successful"
+                    },
+                    "400": {
+                        "description": "Insufficient funds"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
                     }
                 }
             }
