@@ -8,8 +8,6 @@
     "migrate": "npm run knex migrate:latest",
     "migrate:rollback": "npm run knex migrate:rollback",
     "migrate:make": "npm run knex migrate:make",
-    "seed": "npm run knex seed:run",
-    "seed:make": "npm run knex seed:make",
     "test": "cross-env NODE_ENV=test ts-mocha --timeout 0 --require tests/setup.ts \"tests/**/*.{spec,test}.ts\"",
     "test:watch": "cross-env NODE_ENV=test mocha --require ts-node/register --require tests/setup.ts --extension ts --spec \"tests/**/*.{spec,test}.ts\" --timeout 10000 --recursive --exit --color --reporter spec --watch",
     "test:coverage": "cross-env NODE_ENV=test nyc mocha --require ts-node/register --require tests/setup.ts --extension ts --spec \"tests/**/*.{spec,test}.ts\" --timeout 10000 --recursive --exit --color --reporter spec"
