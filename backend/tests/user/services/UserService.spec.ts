@@ -20,7 +20,6 @@ describe("UserService", function () {
 
         userService = new UserService(dbStub, adjutorServiceStub as any);
     });
-
     afterEach(() => {
         sinon.restore();
     });
