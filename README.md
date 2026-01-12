@@ -26,7 +26,7 @@ The database schema consists of three main entities: `users`, `wallets`, and `tr
 ## How to execute the project
 
 ### Prerequisites
-- [Node.js](https://nodejs.org/) (optional, if running without Docker).
+- [Node.js](https://nodejs.org/)
 
 ### Running Locally (Development)
 1. **Navigate to the backend directory**:
