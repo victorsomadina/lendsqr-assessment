@@ -23,4 +23,4 @@ COPY --from=builder /app/.env.example ./.env.example
 EXPOSE 8080
 ENV PORT 8080
 
-CMD ["node", "dist/src/server/server.js"]
+CMD ["npm", "run", "start"]
